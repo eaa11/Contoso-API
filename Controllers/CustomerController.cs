@@ -70,9 +70,7 @@ namespace Contoso.API.Controller
         {
 
             if (!await _customerRepository.HasCustomersAsync(customerId))
-            {
                 return NotFound();
-            }
 
             var customerFound = await _customerRepository.GetCustomerAsync(customerId,false);
 
@@ -92,9 +90,7 @@ namespace Contoso.API.Controller
         {
 
             if (!await _customerRepository.HasCustomersAsync(customerId))
-            {
                 return NotFound();
-            }
 
             var customerFound = await _customerRepository
                 .GetCustomerAsync(customerId, false);
@@ -122,9 +118,7 @@ namespace Contoso.API.Controller
         {
 
             if (!await _customerRepository.HasCustomersAsync(customerId))
-            {
                 return NotFound();
-            }
 
             var customerFound = await _customerRepository
                .GetCustomerAsync(customerId, false);

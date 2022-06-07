@@ -36,43 +36,36 @@ namespace Contoso.API.Controllers
                 _logger.LogInformation($"Customer with {customerId} was not found when getting the address.");
                 return NotFound();
             }
-            var addressForCustomer = await _customerRepository
+            var customerAddress = await _customerRepository
                 .GetAddressesForCustomerAsync(customerId);
 
-            return Ok(_mapper.Map<IEnumerable<AddressDto>>(addressForCustomer));
+            return Ok(_mapper.Map<IEnumerable<AddressDto>>(customerAddress));
 
         }
 
         [HttpGet("{addressId}", Name = "GetAddress")]
         public async Task<ActionResult<AddressDto>> GetAddress(int customerId, int addressId)
         {
-            if (!await _customerRepository.HasCustomersAsync(customerId))
-            {
-
+            if (!await _customerRepository.HasCustomersAsync(customerId)) 
                 return NotFound();
-            }
 
-            var addressOfCustomer = await _customerRepository
+
+            var customerAddress = await _customerRepository
                 .GetAddressForCustomerAsync(customerId, addressId);
 
-            if (addressOfCustomer == null)
-            {
-                return NotFound();
-            }
+            if (customerAddress == null) return NotFound();
 
-            return Ok(_mapper.Map<AddressDto>(addressOfCustomer));
+
+            return Ok(_mapper.Map<AddressDto>(customerAddress));
         }
 
         [HttpPost()]
-        public async Task<ActionResult<AddressDto>> CreateAddress(int customerId, AddressForCreationDto address)
+        public async Task<ActionResult<AddressDto>> CreateAddress(int customerId, AddressForCreationDto addressForCreationDto)
         {
 
-            if (!await _customerRepository.HasCustomersAsync(customerId))
-            {
-                return NotFound();
-            }
+            if (!await _customerRepository.HasCustomersAsync(customerId)) return NotFound();
 
-            var newAddress = _mapper.Map<Address>(address);
+            var newAddress = _mapper.Map<Address>(addressForCreationDto);
 
             await _customerRepository.AddAddressForCustomerAsync(customerId, newAddress);
 
@@ -91,20 +84,18 @@ namespace Contoso.API.Controllers
         }
 
         [HttpPut("{addressId}")]
-        public async Task<ActionResult> UpdateAddress(int customerId, int addressId, AddressForUpdateDto addressDto)
+        public async Task<ActionResult> UpdateAddress(int customerId, int addressId, AddressForUpdateDto addressForUpdateDto)
         {
 
             if (!await _customerRepository.HasCustomersAsync(customerId))
-            {
                 return NotFound();
-            }
 
             var addressFound = await _customerRepository.GetAddressForCustomerAsync(customerId, addressId);
           
 
             if (addressFound == null) return NotFound();
 
-            _mapper.Map(addressDto, addressFound);
+            _mapper.Map(addressForUpdateDto, addressFound);
 
             await _customerRepository.SaveChangesAsync();
 
@@ -117,9 +108,7 @@ namespace Contoso.API.Controllers
         {
 
             if (!await _customerRepository.HasCustomersAsync(customerId))
-            {
                 return NotFound();
-            }
 
             var addressFound = await _customerRepository
                 .GetAddressForCustomerAsync(customerId, addressId);
@@ -147,9 +136,7 @@ namespace Contoso.API.Controllers
         {
 
             if (!await _customerRepository.HasCustomersAsync(customerId))
-            {
                 return NotFound();
-            }
 
             var addressFound = await _customerRepository
                .GetAddressForCustomerAsync(customerId, addressId);
