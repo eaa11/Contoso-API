@@ -17,7 +17,7 @@
                        $"sector: {Sector}, " +
                        $"municipio: {Municipality}, " +
                        $"codigo postal: {ZipCode} " +
-                       $"Descripcion{AddressDescription}";
+                       $"Descripcion: {AddressDescription}";
             }
         }
     }
